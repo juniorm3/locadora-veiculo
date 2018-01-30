@@ -12,13 +12,10 @@ public class AluguelDAO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private ApoliceSeguroDAO apoliceSeguroDAO;
-	
-	@Inject
 	private EntityManager manager;
 	
 	public void salvar(Aluguel aluguel) {
-		apoliceSeguroDAO.salvar(aluguel.getApoliceSeguro());
+		//apoliceSeguroDAO.salvar(aluguel.getApoliceSeguro());
 		
 		manager.merge(aluguel);
 	}
