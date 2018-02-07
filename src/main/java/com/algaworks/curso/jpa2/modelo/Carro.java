@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -71,17 +72,17 @@ public class Carro {
 		this.modelo = modelo;
 	}
 	
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name="carro_acessorio"
-			,joinColumns=@JoinColumn(name="codigo_carro")
-			,inverseJoinColumns=@JoinColumn(name ="codigo_acessorio"))
+				, joinColumns=@JoinColumn(name="codigo_carro")
+				, inverseJoinColumns=@JoinColumn(name="codigo_acessorio"))
 	public List<Acessorio> getAcessorios() {
 		return acessorios;
 	}
 	public void setAcessorios(List<Acessorio> acessorios) {
 		this.acessorios = acessorios;
 	}
-		
+	
 	@OneToMany(mappedBy="carro")
 	public List<Aluguel> getAlugueis() {
 		return alugueis;
@@ -89,6 +90,7 @@ public class Carro {
 	public void setAlugueis(List<Aluguel> alugueis) {
 		this.alugueis = alugueis;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

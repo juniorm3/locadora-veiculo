@@ -13,8 +13,9 @@ public class ApoliceSeguroDAO implements Serializable {
 	
 	@Inject
 	private EntityManager manager;
-
+	
 	public void salvar(ApoliceSeguro apoliceSeguro) {
 		manager.persist(apoliceSeguro);
 	}
+
 }

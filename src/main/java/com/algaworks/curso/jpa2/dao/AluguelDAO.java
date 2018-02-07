@@ -15,8 +15,6 @@ public class AluguelDAO implements Serializable {
 	private EntityManager manager;
 	
 	public void salvar(Aluguel aluguel) {
-		//apoliceSeguroDAO.salvar(aluguel.getApoliceSeguro());
-		
 		manager.merge(aluguel);
 	}
 

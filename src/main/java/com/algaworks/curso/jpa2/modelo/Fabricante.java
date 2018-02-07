@@ -10,25 +10,23 @@ public class Fabricante {
 
 	private Long codigo;
 	private String nome;
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public Long getCodigo() {
 		return codigo;
 	}
-
 	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
 	}
-
+	
 	public String getNome() {
 		return nome;
 	}
-
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -36,7 +34,7 @@ public class Fabricante {
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
