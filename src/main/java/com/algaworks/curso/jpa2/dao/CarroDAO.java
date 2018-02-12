@@ -22,8 +22,8 @@ public class CarroDAO implements Serializable {
 		return manager.find(Carro.class, codigo);
 	}
 	
-	public void salvar(Carro fabricante) {
-		manager.merge(fabricante);
+	public void salvar(Carro carro) {
+		manager.merge(carro);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -15,7 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy=InheritanceType.JOINED)
 @DiscriminatorColumn(name="TIPO_PESSOA", discriminatorType=DiscriminatorType.STRING)
 public abstract class Pessoa {
 
