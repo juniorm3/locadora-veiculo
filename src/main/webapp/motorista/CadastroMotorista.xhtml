@@ -43,6 +43,13 @@
 	    		
 	    		<p:outputLabel value="CNH" for="cnh"/>
 	    		<p:inputText id="cnh" size="20" maxlength="20" value="#{cadastroMotoristaBean.motorista.numeroCNH}"/>
+	    		
+	    		<p:outputLabel value="Sexo" for="sexo"/>
+	    		<p:selectOneMenu id="sexo" value="#{cadastroMotoristaBean.motorista.sexo}">
+  					<f:selectItem itemLabel="Selecione o sexo" />
+        			<f:selectItems value="#{cadastroMotoristaBean.sexos}" var="sexo" 
+        				itemLabel="#{sexo.descricao}" itemValue="#{sexo}"/>
+				</p:selectOneMenu>
 	    	</p:panelGrid>
     	</h:form>
     </ui:define>

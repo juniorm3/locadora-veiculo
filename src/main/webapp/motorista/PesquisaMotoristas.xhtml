@@ -37,6 +37,9 @@
 		    		<p:column headerText="CNH">
 		    			<h:outputText value="#{motorista.numeroCNH}" />
 		    		</p:column>
+		    		<p:column headerText="Sexo">
+		    			<h:outputText value="#{motorista.sexo.descricao}" />
+		    		</p:column>
 		    		<p:column style="width: 100px; text-align: center">
 		    			<p:button outcome="CadastroMotorista" icon="ui-icon-pencil" title="Editar">
 		    				<f:param name="motorista" value="#{motorista.codigo}"/>

@@ -33,22 +33,27 @@ update="frmCadastro"/>
 	    			columnClasses="rotulo, campo">
 	    		<p:outputLabel value="Código" for="codigo"/>
 	    		<p:inputText id="codigo" size="20" maxlength="20" value="#{cadastroFuncionarioBean.funcionario.codigo}" 
-
-readonly="true"/>
+	    			readonly="true"/>
 	    		
 	    		<p:outputLabel value="Nome" for="nome"/>
 	    		<p:inputText id="nome" size="60" maxlength="80" value="#{cadastroFuncionarioBean.funcionario.nome}"/>
 	    		
 	    		<p:outputLabel value="Data de nascimento" for="dataNascimento"/>
 	    		<p:calendar id="dataNascimento" size="20" value="#{cadastroFuncionarioBean.funcionario.dataNascimento}" 
-
-pattern="dd/MM/yyyy"/>
+	    			pattern="dd/MM/yyyy"/>
 	    		
 	    		<p:outputLabel value="CPF" for="cpf"/>
 	    		<p:inputText id="cpf" size="20" maxlength="20" value="#{cadastroFuncionarioBean.funcionario.cpf}"/>
 	    		
 	    		<p:outputLabel value="Matrícula" for="matricula"/>
 	    		<p:inputText id="matricula" size="20" maxlength="20" value="#{cadastroFuncionarioBean.funcionario.matricula}"/>
+	    		
+	    		<p:outputLabel value="Sexo" for="sexo"/>
+	    		<p:selectOneMenu id="sexo" value="#{cadastroFuncionarioBean.funcionario.sexo}">
+	    			<f:selectItem itemLabel="Selecione o sexo"/>
+	    			<f:selectItems value="#{cadastroFuncionarioBean.sexos}" var="sexo"
+	    				itemLabel="#{sexo.descricao}" itemValue="#{sexo}"/>
+	    		</p:selectOneMenu>
 	    	</p:panelGrid>
     	</h:form>
     </ui:define>
