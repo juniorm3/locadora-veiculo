@@ -27,6 +27,8 @@ public class Aluguel {
 	
 	private ApoliceSeguro apoliceSeguro;
 	
+	private Motorista motorista;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public Long getCodigo() {
@@ -84,6 +86,16 @@ public class Aluguel {
 	public void setDataDevolucao(Date dataDevolucao) {
 		this.dataDevolucao = dataDevolucao;
 	}
+	
+	@ManyToOne
+	@JoinColumn(name="motorista_id")
+	public Motorista getMotorista() {
+		return motorista;
+	}
+	public void setMotorista(Motorista motorista) {
+		this.motorista = motorista;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
