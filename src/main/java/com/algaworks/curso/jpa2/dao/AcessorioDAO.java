@@ -27,7 +27,7 @@ public class AcessorioDAO implements Serializable {
 	}
 
 	public List<Acessorio> buscarTodos() {
-		return manager.createQuery("from Acessorio").getResultList();
+		return manager.createQuery("from Acessorio", Acessorio.class).getResultList();
 	}
 	
 	@Transactional

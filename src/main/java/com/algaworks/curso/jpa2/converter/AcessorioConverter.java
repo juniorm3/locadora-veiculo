@@ -4,25 +4,24 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.algaworks.curso.jpa2.dao.AcessorioDAO;
 import com.algaworks.curso.jpa2.modelo.Acessorio;
-import com.algaworks.curso.jpa2.util.cdi.CDIServiceLocator;
 
 @FacesConverter("acessorioConverter")
 public class AcessorioConverter implements Converter {
-
-	private AcessorioDAO acessorioDAO;
 	
-	public AcessorioConverter() {
-		this.acessorioDAO = CDIServiceLocator.getBean(AcessorioDAO.class);
-	}
+	@Inject
+	private AcessorioDAO acessorioDAO;
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		Acessorio retorno = null;
 		
-		if (value != null) {
+		if (StringUtils.isNotBlank(value)) {
 			retorno = this.acessorioDAO.buscarPeloCodigo(new Long(value));
 		}
 

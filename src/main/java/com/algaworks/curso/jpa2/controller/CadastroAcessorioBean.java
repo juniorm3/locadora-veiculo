@@ -11,6 +11,7 @@ import com.algaworks.curso.jpa2.service.CadastroAcessorioService;
 import com.algaworks.curso.jpa2.service.NegocioException;
 import com.algaworks.curso.jpa2.util.jsf.FacesUtil;
 
+
 @Named
 @ViewScoped
 public class CadastroAcessorioBean implements Serializable {

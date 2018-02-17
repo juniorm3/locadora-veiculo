@@ -2,6 +2,7 @@ package com.algaworks.curso.jpa2.util.jpa;
 
 import java.io.Serializable;
 
+import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
@@ -9,6 +10,7 @@ import javax.interceptor.InvocationContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+@Priority(Interceptor.Priority.LIBRARY_BEFORE)
 @Interceptor
 @Transactional
 public class TransactionInterceptor implements Serializable {

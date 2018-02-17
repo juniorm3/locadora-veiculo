@@ -4,25 +4,24 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.algaworks.curso.jpa2.dao.ModeloCarroDAO;
 import com.algaworks.curso.jpa2.modelo.ModeloCarro;
-import com.algaworks.curso.jpa2.util.cdi.CDIServiceLocator;
 
 @FacesConverter(forClass=ModeloCarro.class)
 public class ModeloCarroConverter implements Converter {
 
+	@Inject
 	private ModeloCarroDAO modeloCarroDAO;
-	
-	public ModeloCarroConverter() {
-		this.modeloCarroDAO = CDIServiceLocator.getBean(ModeloCarroDAO.class);
-	}
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		ModeloCarro retorno = null;
 
-		if (value != null) {
+		if (StringUtils.isNotBlank(value)) {
 			retorno = this.modeloCarroDAO.buscarPeloCodigo(new Long(value));
 		}
 

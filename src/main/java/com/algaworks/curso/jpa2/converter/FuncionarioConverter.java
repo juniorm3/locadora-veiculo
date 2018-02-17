@@ -4,25 +4,24 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.algaworks.curso.jpa2.dao.FuncionarioDAO;
 import com.algaworks.curso.jpa2.modelo.Funcionario;
-import com.algaworks.curso.jpa2.util.cdi.CDIServiceLocator;
 
 @FacesConverter(forClass=Funcionario.class)
 public class FuncionarioConverter implements Converter {
 
+	@Inject
 	private FuncionarioDAO funcionarioDAO;
-	
-	public FuncionarioConverter() {
-		this.funcionarioDAO = CDIServiceLocator.getBean(FuncionarioDAO.class);
-	}
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		Funcionario retorno = null;
 
-		if (value != null) {
+		if (StringUtils.isNoneBlank(value)) {
 			retorno = this.funcionarioDAO.buscarPeloCodigo(new Long(value));
 		}
 

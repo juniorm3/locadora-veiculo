@@ -4,15 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.algaworks.curso.jpa2.dao.MotoristaDAO;
 import com.algaworks.curso.jpa2.modelo.Motorista;
 import com.algaworks.curso.jpa2.service.NegocioException;
-import com.algaworks.curso.jpa2.util.jsf.FacesUtil;
+import com.algaworks.curso.jpa2.util.jsf.FacesMessages;
 
 @Named
 @ViewScoped
@@ -27,6 +26,13 @@ public class PesquisaMotoristaBean implements Serializable {
 
 	private Motorista motoristaSelecionado;
 
+	@Inject
+	private FacesMessages facesMessages;
+
+	public void inicializar() {
+		motoristas = motoristaDAO.buscarTodos();
+	}
+
 	public List<Motorista> getMotoristas() {
 		return motoristas;
 	}
@@ -35,10 +41,9 @@ public class PesquisaMotoristaBean implements Serializable {
 		try {
 			motoristaDAO.excluir(motoristaSelecionado);
 			this.motoristas.remove(motoristaSelecionado);
-			FacesUtil.addSuccessMessage("Motorista " + motoristaSelecionado.getNome() + " excluido com sucesso!");
+			facesMessages.info("Motorista " + motoristaSelecionado.getNome() + " excluído com sucesso.");
 		} catch (NegocioException e) {
-			FacesUtil.addErrorMessage(e.getMessage());
-			e.printStackTrace();
+			facesMessages.error(e.getMessage());
 		}
 	}
 
@@ -48,11 +53,6 @@ public class PesquisaMotoristaBean implements Serializable {
 
 	public void setMotoristaSelecionado(Motorista motoristaSelecionado) {
 		this.motoristaSelecionado = motoristaSelecionado;
-	}
-	
-	@PostConstruct
-	public void inicializar() {
-		motoristas = motoristaDAO.buscarTodos();
 	}
 
 }

@@ -27,9 +27,8 @@ public class CarroDAO implements Serializable {
 		manager.merge(carro);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Carro> buscarTodos() {
-		return manager.createQuery("from Carro").getResultList();
+		return manager.createQuery("from Carro", Carro.class).getResultList();
 	}
 
 	@Transactional
