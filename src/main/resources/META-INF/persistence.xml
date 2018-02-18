@@ -4,16 +4,12 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	
 	<persistence-unit name="locadoraVeiculoPU" transaction-type="RESOURCE_LOCAL">
+		<non-jta-data-source>java:comp/env/jdbc/locadoraDB</non-jta-data-source>
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/locadora_veiculo"/>
-			<property name="javax.persistence.jdbc.user" value="root"/>
-			<property name="javax.persistence.jdbc.password" value="05120326"/>
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-			
 			<!-- validate | update | create | create-drop -->
 			<property name="hibernate.hbm2ddl.auto" value="update"/>
-			<property name="hibernate.show_sql" value="true"/>
 			<property name="hibernate.format_sql" value="true"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>			
 		</properties>
 	</persistence-unit>
 	

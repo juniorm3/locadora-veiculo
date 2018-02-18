@@ -18,13 +18,13 @@
 		<mysql.connector.version>5.1.45</mysql.connector.version>
 		
 		<!-- Omnifaces -->
-		<omnifaces.version>2.1</omnifaces.version>
+		<omnifaces.version>2.2</omnifaces.version>
 		
 		<!-- Primefaces -->
-		<primefaces.version>5.2</primefaces.version>
+		<primefaces.version>6.1</primefaces.version>
 		
 		<!-- JSF Version -->
-		<javax.faces.version>2.2.10</javax.faces.version>
+		<javax.faces.version>2.2.16</javax.faces.version>
 		
 		<!-- Weld - Implementação do CDI -->
 		<weld.version>2.2.10.Final</weld.version>
@@ -50,10 +50,10 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.7.0</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
