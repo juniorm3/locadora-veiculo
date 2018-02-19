@@ -13,6 +13,7 @@ import com.algaworks.curso.jpa2.dao.AcessorioDAO;
 import com.algaworks.curso.jpa2.modelo.Acessorio;
 import com.algaworks.curso.jpa2.service.NegocioException;
 import com.algaworks.curso.jpa2.util.jsf.FacesUtil;
+import com.algaworks.curso.modelolazy.LazyAcessorioDataModel;
 
 @Named
 @ViewScoped
@@ -24,6 +25,8 @@ public class PesquisaAcessorioBean implements Serializable {
 	AcessorioDAO acessorioDAO;
 	
 	private List<Acessorio> acessorios = new ArrayList<>();
+	
+	private LazyAcessorioDataModel lazyAcessorios;
 	
 	private Acessorio acessorioSelecionado;
 	
@@ -50,6 +53,12 @@ public class PesquisaAcessorioBean implements Serializable {
 	
 	@PostConstruct
 	public void inicializar() {
-		acessorios = acessorioDAO.buscarTodos();
+		//acessorios = acessorioDAO.buscarTodos();
+		
+		lazyAcessorios = new LazyAcessorioDataModel(acessorioDAO);
+	}
+	
+	public LazyAcessorioDataModel getLazyAcessorios() {
+		return lazyAcessorios;
 	}
 }

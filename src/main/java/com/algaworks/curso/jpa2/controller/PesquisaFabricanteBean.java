@@ -13,6 +13,7 @@ import com.algaworks.curso.jpa2.dao.FabricanteDAO;
 import com.algaworks.curso.jpa2.modelo.Fabricante;
 import com.algaworks.curso.jpa2.service.NegocioException;
 import com.algaworks.curso.jpa2.util.jsf.FacesUtil;
+import com.algaworks.curso.modelolazy.LazyFabricanteDataModel;
 
 @Named
 @ViewScoped
@@ -24,6 +25,8 @@ public class PesquisaFabricanteBean implements Serializable {
 	FabricanteDAO fabricanteDAO;
 	
 	private List<Fabricante> fabricantes = new ArrayList<>();
+	
+	private LazyFabricanteDataModel lazyFabricantes;
 	
 	private Fabricante fabricanteSelecionado;
 	
@@ -50,6 +53,11 @@ public class PesquisaFabricanteBean implements Serializable {
 	
 	@PostConstruct
 	public void inicializar() {
-		fabricantes = fabricanteDAO.buscarTodos();
+		//fabricantes = fabricanteDAO.buscarTodos();
+		lazyFabricantes = new LazyFabricanteDataModel(fabricanteDAO);
+	}
+	
+	public LazyFabricanteDataModel getLazyFabricantes() {
+		return lazyFabricantes;
 	}
 }

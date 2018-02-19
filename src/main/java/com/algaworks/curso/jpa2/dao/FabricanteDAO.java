@@ -15,27 +15,39 @@ public class FabricanteDAO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private EntityManager em;
+	private EntityManager manager;
+	
 
 	public void salvar(Fabricante fabricante) {
-		em.merge(fabricante);
+		manager.merge(fabricante);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Fabricante> buscarTodos() {
-		return em.createQuery("from Fabricante").getResultList();
+		return manager.createQuery("from Fabricante").getResultList();
 	}
 
 	@Transactional
 	public void excluir(Fabricante fabricante) throws NegocioException {
-		Fabricante fabricanteTemp = em.find(Fabricante.class, fabricante.getCodigo());
+		Fabricante fabricanteTemp = manager.find(Fabricante.class, fabricante.getCodigo());
 
-		em.remove(fabricanteTemp);
-		em.flush();
+		manager.remove(fabricanteTemp);
+		manager.flush();
 	}
 
 	public Fabricante buscarPeloCodigo(Long codigo) {
-		return em.find(Fabricante.class, codigo);
+		return manager.find(Fabricante.class, codigo);
+	}
+
+	public List<Fabricante> buscaComPaginacao(int first, int pageSize) {		
+		return manager.createQuery("select f from Fabricante f", Fabricante.class)
+				.setFirstResult(first)
+				.setMaxResults(pageSize)
+				.getResultList();
+	}
+
+	public Long encontratQuantidadeDeFabricantes() {
+		return manager.createQuery("select count(f) from Fabricante f", Long.class).getSingleResult();
 	}
 
 }

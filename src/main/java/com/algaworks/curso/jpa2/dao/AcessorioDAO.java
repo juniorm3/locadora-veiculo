@@ -40,4 +40,15 @@ public class AcessorioDAO implements Serializable {
 			throw new NegocioException("Acessorio não pode ser excluído.");
 		}
 	}
+
+	public List<Acessorio> buscarComPaginacao(int first, int pageSize) {		
+		return manager.createQuery("select a from Acessorio a", Acessorio.class)
+				.setFirstResult(first)
+				.setMaxResults(pageSize)
+				.getResultList();
+	}
+
+	public Long encontrarQuantidadeAcessorios() {		
+		return manager.createQuery("select count(a) from Acessorio a", Long.class).getSingleResult();
+	}
 }

@@ -12,6 +12,7 @@ import com.algaworks.curso.jpa2.dao.ModeloCarroDAO;
 import com.algaworks.curso.jpa2.modelo.ModeloCarro;
 import com.algaworks.curso.jpa2.service.NegocioException;
 import com.algaworks.curso.jpa2.util.jsf.FacesUtil;
+import com.algaworks.curso.modelolazy.LazyModeloCarroDataModel;
 
 @Named
 @ViewScoped
@@ -20,6 +21,8 @@ public class PesquisaModeloCarroBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private List<ModeloCarro> modelosCarro;
+	
+	private LazyModeloCarroDataModel lazyModeloCarro;
 	
 	private ModeloCarro modeloCarroSelecionado;
 	
@@ -32,7 +35,8 @@ public class PesquisaModeloCarroBean implements Serializable {
 	
 	@PostConstruct
 	public void inicializar() {
-		this.modelosCarro = this.modeloCarroDAO.buscarTodos();
+		//this.modelosCarro = this.modeloCarroDAO.buscarTodos();
+		lazyModeloCarro = new LazyModeloCarroDataModel(modeloCarroDAO);
 	}
 	
 	public void excluir() {
@@ -48,8 +52,13 @@ public class PesquisaModeloCarroBean implements Serializable {
 	public ModeloCarro getModeloCarroSelecionado() {
 		return modeloCarroSelecionado;
 	}
+	
 	public void setModeloCarroSelecionado(ModeloCarro modeloCarroSelecionado) {
 		this.modeloCarroSelecionado = modeloCarroSelecionado;
+	}
+	
+	public LazyModeloCarroDataModel getLazyModeloCarro() {
+		return lazyModeloCarro;
 	}
 	
 }
