@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -16,7 +15,7 @@ import com.algaworks.curso.jpa2.modelo.Carro;
 import com.algaworks.curso.jpa2.modelo.ModeloCarro;
 import com.algaworks.curso.jpa2.service.CadastroCarroService;
 import com.algaworks.curso.jpa2.service.NegocioException;
-import com.algaworks.curso.jpa2.util.jsf.FacesUtil;
+import com.algaworks.curso.jpa2.util.jsf.FacesMessages;
 
 @Named
 @ViewScoped
@@ -39,26 +38,30 @@ public class CadastroCarroBean implements Serializable {
 	@Inject
 	private ModeloCarroDAO modeloCarroDAO;
 	
-	@PostConstruct
-	public void inicializar() {
+	@Inject
+	private FacesMessages facesMessages;
+	
+	public CadastroCarroBean() {
 		this.limpar();
+	}
+	
+	public void inicializar() {
+		if (this.carro == null) {
+			this.limpar();			
+		}
 		
 		this.acessorios = acessorioDAO.buscarTodos();
 		this.modelosCarros = this.modeloCarroDAO.buscarTodos();
 	}
 	
 	public void salvar() {
-		try {
+		try {			
 			this.cadastroCarroService.salvar(carro);
-			FacesUtil.addSuccessMessage("Carro salvo com sucesso!");
+			facesMessages.info("Carro salvo com sucesso.");
+			this.limpar();
 		} catch (NegocioException e) {
-			FacesUtil.addErrorMessage(e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			FacesUtil.addErrorMessage("Erro desconhecido. Contatar o administrador");
-		}
-		
-		this.limpar();
+			facesMessages.error(e.getMessage());
+		} 		
 	}
 	
 	public void limpar() {
@@ -79,6 +82,10 @@ public class CadastroCarroBean implements Serializable {
 
 	public List<ModeloCarro> getModelosCarros() {
 		return modelosCarros;
+	}
+	
+	public boolean isEditando() {
+		return this.carro.getCodigo() != null;
 	}
 
 }

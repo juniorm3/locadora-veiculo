@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import com.algaworks.curso.jpa2.modelo.Carro;
@@ -28,7 +27,7 @@ public class CarroDAO implements Serializable {
 	}
 
 	public List<Carro> buscarTodos() {
-		return manager.createQuery("from Carro", Carro.class).getResultList();
+		return manager.createNamedQuery("Carro.buscarTodos", Carro.class).getResultList();
 	}
 
 	@Transactional
@@ -42,13 +41,21 @@ public class CarroDAO implements Serializable {
 		}
 	}
 
-	public Carro buscarCarroComAcessorios(Long codigo) {
-		try {
-			return (Carro) manager.createQuery("select c from Carro c JOIN c.acessorios a where c.codigo = ?")
-					.setParameter(1, codigo).getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
+	public Carro buscarAcessorios(Long codigo) {
+		return manager.createNamedQuery("Carro.buscarCarroComAcessorios", Carro.class)
+				.setParameter("codigo", codigo)
+				.getSingleResult();
+	}
+	
+	public List<Carro> buscarComPaginacao(int first, int pageSize) {
+		return manager.createNamedQuery("Carro.buscarTodos", Carro.class)
+							.setFirstResult(first)
+							.setMaxResults(pageSize)
+							.getResultList();
+	}
+	
+	public Long encontrarQuantidadeDeCarros() {
+		return manager.createQuery("select count(c) from Carro c", Long.class).getSingleResult();
 	}
 
 }

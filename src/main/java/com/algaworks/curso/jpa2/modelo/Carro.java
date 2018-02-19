@@ -3,6 +3,7 @@ package com.algaworks.curso.jpa2.modelo;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,9 +13,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 @Entity
+@NamedQueries({
+		@NamedQuery(name = "Carro.buscarTodos", query = "select c from Carro c inner join fetch c.modelo order by c.codigo"),
+		@NamedQuery(name = "Carro.buscarCarroComAcessorios", query = "select c from Carro c left JOIN fetch c.acessorios a "
+				+ " where c.codigo = :codigo") })
 public class Carro {
 
 	private Long codigo;
@@ -25,72 +32,80 @@ public class Carro {
 	private ModeloCarro modelo;
 	private List<Acessorio> acessorios;
 	private List<Aluguel> alugueis;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getCodigo() {
 		return codigo;
 	}
+
 	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
 	}
-	
+
 	public String getPlaca() {
 		return placa;
 	}
+
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
-	
+
 	public String getCor() {
 		return cor;
 	}
+
 	public void setCor(String cor) {
 		this.cor = cor;
 	}
-	
+
 	public String getChassi() {
 		return chassi;
 	}
+
 	public void setChassi(String chassi) {
 		this.chassi = chassi;
 	}
-	
+
 	public BigDecimal getValorDiaria() {
 		return valorDiaria;
 	}
+
 	public void setValorDiaria(BigDecimal valorDiaria) {
 		this.valorDiaria = valorDiaria;
 	}
-	
-	@ManyToOne
-	@JoinColumn(name="codigo_modelo")
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "codigo_modelo")
 	public ModeloCarro getModelo() {
 		return modelo;
 	}
+
 	public void setModelo(ModeloCarro modelo) {
 		this.modelo = modelo;
 	}
-	
-	@ManyToMany(fetch=FetchType.LAZY)
-	@JoinTable(name="carro_acessorio"
-				, joinColumns=@JoinColumn(name="codigo_carro")
-				, inverseJoinColumns=@JoinColumn(name="codigo_acessorio"))
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "carro_acessorio", 
+					joinColumns = @JoinColumn(name = "codigo_carro"), 
+					inverseJoinColumns = @JoinColumn(name = "codigo_acessorio"))
 	public List<Acessorio> getAcessorios() {
 		return acessorios;
 	}
+
 	public void setAcessorios(List<Acessorio> acessorios) {
 		this.acessorios = acessorios;
 	}
-	
-	@OneToMany(mappedBy="carro")
+
+	@OneToMany(mappedBy = "carro")
 	public List<Aluguel> getAlugueis() {
 		return alugueis;
 	}
+
 	public void setAlugueis(List<Aluguel> alugueis) {
 		this.alugueis = alugueis;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -98,7 +113,7 @@ public class Carro {
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

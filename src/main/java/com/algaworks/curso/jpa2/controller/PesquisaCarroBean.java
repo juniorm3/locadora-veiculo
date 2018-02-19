@@ -9,6 +9,7 @@ import javax.inject.Named;
 
 import com.algaworks.curso.jpa2.dao.CarroDAO;
 import com.algaworks.curso.jpa2.modelo.Carro;
+import com.algaworks.curso.jpa2.modelolazy.LazyCarroDataModel;
 import com.algaworks.curso.jpa2.service.NegocioException;
 import com.algaworks.curso.jpa2.util.jsf.FacesMessages;
 
@@ -24,18 +25,20 @@ public class PesquisaCarroBean implements Serializable {
 	@Inject
 	private CarroDAO carroDAO;
 
-	private List<Carro> carros;
+	private LazyCarroDataModel lazyCarros;
 
 	private Carro carroSelecionado;
 
 	public void inicializar() {
-		carros = carroDAO.buscarTodos();
+		lazyCarros = new LazyCarroDataModel(carroDAO);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void excluir() {
 		try {
 			carroDAO.excluir(carroSelecionado);
-			this.carros.remove(carroSelecionado);
+			List<Carro> listaCarros = (List<Carro>) this.getLazyCarros().getWrappedData();
+			listaCarros.remove(carroSelecionado);
 			facesMessages.info("Carro placa " + carroSelecionado.getPlaca() + " excluído com sucesso.");
 		} catch (NegocioException e) {
 			facesMessages.error(e.getMessage());
@@ -50,16 +53,11 @@ public class PesquisaCarroBean implements Serializable {
 		this.carroSelecionado = carroSelecionado;
 	}
 
-	public void buscarCarroComAcessorios() {
-		carroSelecionado = carroDAO.buscarCarroComAcessorios(carroSelecionado.getCodigo());
-		Carro carroAtualizado = carroSelecionado;
-
-		if (carroAtualizado != null) {
-			carroSelecionado = carroAtualizado;
-		}
+	public void buscarAcessoriosParaCarro() {
+		carroSelecionado = carroDAO.buscarAcessorios(carroSelecionado.getCodigo());
 	}
 
-	public List<Carro> getCarros() {
-		return carros;
+	public LazyCarroDataModel getLazyCarros() {
+		return lazyCarros;
 	}
 }
