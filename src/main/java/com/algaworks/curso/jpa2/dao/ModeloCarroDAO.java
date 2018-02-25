@@ -20,14 +20,14 @@ public class ModeloCarroDAO implements Serializable {
 
 	public ModeloCarro buscarPeloCodigo(Long codigo) {
 		return manager.find(ModeloCarro.class, codigo);
-	}
+	}	
 
 	public void salvar(ModeloCarro modeloCarro) {
 		manager.merge(modeloCarro);
 	}
 
 	public List<ModeloCarro> buscarTodos() {
-		return manager.createQuery("from ModeloCarro").getResultList();
+		return manager.createQuery("from ModeloCarro", ModeloCarro.class).getResultList();
 	}
 
 	@Transactional

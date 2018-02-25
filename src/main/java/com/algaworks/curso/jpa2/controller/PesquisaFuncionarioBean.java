@@ -4,15 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.algaworks.curso.jpa2.dao.FuncionarioDAO;
 import com.algaworks.curso.jpa2.modelo.Funcionario;
 import com.algaworks.curso.jpa2.service.NegocioException;
-import com.algaworks.curso.jpa2.util.jsf.FacesUtil;
+import com.algaworks.curso.jpa2.util.jsf.FacesMessages;
 
 @Named
 @ViewScoped
@@ -21,11 +20,18 @@ public class PesquisaFuncionarioBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	FuncionarioDAO funcionarioDAO;
+	private FuncionarioDAO funcionarioDAO;
 	
 	private List<Funcionario> funcionarios = new ArrayList<>();
 	
 	private Funcionario funcionarioSelecionado;
+	
+	@Inject
+	private FacesMessages facesMessages;
+	
+	public void inicializar() {
+		funcionarios = funcionarioDAO.buscarTodos();
+	}
 	
 	public List<Funcionario> getFuncionarios() {
 		return funcionarios;
@@ -35,9 +41,9 @@ public class PesquisaFuncionarioBean implements Serializable {
 		try {
 			funcionarioDAO.excluir(funcionarioSelecionado);
 			this.funcionarios.remove(funcionarioSelecionado);
-			FacesUtil.addSuccessMessage("Funcionário " + funcionarioSelecionado.getNome() + " excluído com sucesso.");
+			facesMessages.info("Funcionário " + funcionarioSelecionado.getNome() + " excluído com sucesso.");
 		} catch (NegocioException e) {
-			FacesUtil.addErrorMessage(e.getMessage());
+			facesMessages.error(e.getMessage());
 		}
 	}
 
@@ -48,8 +54,4 @@ public class PesquisaFuncionarioBean implements Serializable {
 		this.funcionarioSelecionado = funcionarioSelecionado;
 	}
 	
-	@PostConstruct
-	public void inicializar() {
-		funcionarios = funcionarioDAO.buscarTodos();
-	}
 }

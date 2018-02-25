@@ -1,13 +1,17 @@
 <ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="titulo">Pesquisa de Carro</ui:define>
     
     <ui:define name="corpo">
+    	<f:metadata>
+    		<f:viewAction action="#{pesquisaCarroBean.inicializar}" />
+    	</f:metadata>
+    	
     	<h1>Pesquisa de carros</h1>
     	
     	<h:form id="frmPesquisa">
@@ -15,7 +19,7 @@
     		
     		<p:toolbar style="margin-top: 20px">
     			<p:toolbarGroup>
-    				<p:commandButton value="Novo" id="botaoNovo" action="/carro/CadastroCarro.xhtml"/>
+    				<p:button value="Novo" outcome="/carro/CadastroCarro"/>
     			</p:toolbarGroup>
     		</p:toolbar>
     	
@@ -39,8 +43,8 @@
 		    			<h:outputText value="#{carro.valorDiaria}" />
 		    		</p:column>
 		    		<p:column headerText="Acessórios" style="width: 100px; text-align: center">
-		    			<p:commandButton icon="ui-icon-extlink" title="Acessórios" action="#{pesquisaCarroBean.buscarCarroComAcessorios}"
-		    					process="@this" oncomplete="mostraAcessorios.show()" update=":frmPesquisa:mostraAcessoriosDialog">
+		    			<p:commandButton icon="ui-icon-extlink" title="Acessórios" action="#{pesquisaCarroBean.buscarAcessoriosParaCarro}"
+		    					process="@this" oncomplete="PF('mostraAcessorios').show()" update=":frmPesquisa:mostraAcessoriosDialog">
 		    				<f:setPropertyActionListener target="#{pesquisaCarroBean.carroSelecionado}" value="#{carro}" />
 		    			</p:commandButton>
 		    		</p:column>
@@ -48,7 +52,7 @@
 		    			<p:button outcome="CadastroCarro" icon="ui-icon-pencil" title="Editar">
 		    				<f:param name="carro" value="#{carro.codigo}"/>
 		    			</p:button>
-		    			<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show()"
+		    			<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="PF('confirmacaoExclusao').show()"
 								process="@this" update=":frmPesquisa:confirmacaoExclusaoDialog">
 							<f:setPropertyActionListener target="#{pesquisaCarroBean.carroSelecionado}" value="#{carro}" />
 						</p:commandButton>
@@ -58,9 +62,9 @@
 		    <p:confirmDialog id="confirmacaoExclusaoDialog" widgetVar="confirmacaoExclusao"
 	        		message="Tem certeza que deseja excluir o carro de placa #{pesquisaCarroBean.carroSelecionado.placa}?"  
 	                header="Exclusão de carro" severity="alert">
-	        	<p:button value="Não" onclick="confirmacaoExclusao.hide(); return false;" />
+	        	<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
 	        	<p:commandButton value="Sim" update=":frmPesquisa:carrosTable"
-	        			onclick="confirmacaoExclusao.hide()" action="#{pesquisaCarroBean.excluir}" />
+	        			onclick="PF('confirmacaoExclusao').hide()" action="#{pesquisaCarroBean.excluir}" />
 	    	</p:confirmDialog>
 	    	
 	    	<p:dialog id="mostraAcessoriosDialog" header="Acessórios" widgetVar="mostraAcessorios" modal="true">

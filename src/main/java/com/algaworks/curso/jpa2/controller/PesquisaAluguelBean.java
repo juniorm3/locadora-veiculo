@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -33,7 +32,6 @@ public class PesquisaAluguelBean implements Serializable {
 	@Inject
 	private AluguelDAO aluguelDAO;
 
-	@PostConstruct
 	public void inicializar() {
 		this.aluguel = new Aluguel();
 		this.carro = new Carro();

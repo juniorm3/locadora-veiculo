@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -13,7 +12,7 @@ import com.algaworks.curso.jpa2.modelo.Funcionario;
 import com.algaworks.curso.jpa2.modelo.Sexo;
 import com.algaworks.curso.jpa2.service.CadastroFuncionarioService;
 import com.algaworks.curso.jpa2.service.NegocioException;
-import com.algaworks.curso.jpa2.util.jsf.FacesUtil;
+import com.algaworks.curso.jpa2.util.jsf.FacesMessages;
 
 @Named
 @ViewScoped
@@ -23,26 +22,30 @@ public class CadastroFuncionarioBean implements Serializable {
 
 	private Funcionario funcionario;
 
-	private List<Sexo> sexos;
-
 	@Inject
 	private CadastroFuncionarioService cadastroFuncionarioService;
 
-	@PostConstruct
+	private List<Sexo> sexos;
+
+	@Inject
+	private FacesMessages facesMessages;
+
 	public void inicializar() {
-		this.limpar();
+		if (this.funcionario == null) {
+			this.limpar();
+		}
+
 		this.sexos = Arrays.asList(Sexo.values());
 	}
 
 	public void salvar() {
 		try {
 			this.cadastroFuncionarioService.salvar(funcionario);
-			FacesUtil.addSuccessMessage("Funcionário salvo com sucesso!");
+			facesMessages.info("Funcionário salvo com sucesso!");
+			this.limpar();
 		} catch (NegocioException e) {
-			FacesUtil.addErrorMessage(e.getMessage());
+			facesMessages.error(e.getMessage());
 		}
-
-		this.limpar();
 	}
 
 	public void limpar() {
@@ -59,5 +62,9 @@ public class CadastroFuncionarioBean implements Serializable {
 
 	public List<Sexo> getSexos() {
 		return sexos;
+	}
+
+	public boolean isEditando() {
+		return this.funcionario.getCodigo() != null;
 	}
 }

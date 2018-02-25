@@ -9,6 +9,7 @@ import javax.persistence.PersistenceException;
 
 import com.algaworks.curso.jpa2.modelo.Funcionario;
 import com.algaworks.curso.jpa2.service.NegocioException;
+import com.algaworks.curso.jpa2.util.jpa.Transactional;
 
 public class FuncionarioDAO implements Serializable {
 
@@ -25,11 +26,11 @@ public class FuncionarioDAO implements Serializable {
 		manager.merge(funcionario);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Funcionario> buscarTodos() {
-		return manager.createQuery("from Funcionario").getResultList();
+		return manager.createQuery("from Funcionario", Funcionario.class).getResultList();
 	}
 
+	@Transactional
 	public void excluir(Funcionario funcionario) throws NegocioException {
 		funcionario = buscarPeloCodigo(funcionario.getCodigo());
 		try {

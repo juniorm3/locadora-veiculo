@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @NamedQueries({ @NamedQuery(name = "Carro.buscarTodos", query = "select c from Carro c"),
-		@NamedQuery(name = "Carro.buscarCarroComAcessorios", query = "select c" + " from Carro c JOIN c.acessorios a"
+		@NamedQuery(name = "Carro.buscarCarroComAcessorios", query = "select c" + " from Carro c left JOIN fetch c.acessorios a"
 				+ " where c.codigo = :codigo") })
 public class Carro {
 
@@ -81,7 +82,7 @@ public class Carro {
 		this.valorDiaria = valorDiaria;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "codigo_modelo")
 	public ModeloCarro getModelo() {
 		return modelo;
@@ -92,7 +93,9 @@ public class Carro {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "carro_acessorio", joinColumns = @JoinColumn(name = "codigo_carro"), inverseJoinColumns = @JoinColumn(name = "codigo_acessorio"))
+	@JoinTable(name = "carro_acessorio", 
+		joinColumns = @JoinColumn(name = "codigo_carro"), 
+		inverseJoinColumns = @JoinColumn(name = "codigo_acessorio"))
 	public List<Acessorio> getAcessorios() {
 		return acessorios;
 	}

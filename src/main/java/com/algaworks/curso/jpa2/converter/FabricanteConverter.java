@@ -4,25 +4,24 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.algaworks.curso.jpa2.dao.FabricanteDAO;
 import com.algaworks.curso.jpa2.modelo.Fabricante;
-import com.algaworks.curso.jpa2.util.cdi.CDIServiceLocator;
 
-@FacesConverter(forClass=Fabricante.class)
+@FacesConverter(forClass = Fabricante.class)
 public class FabricanteConverter implements Converter {
 
+	@Inject
 	private FabricanteDAO fabricanteDAO;
-	
-	public FabricanteConverter() {
-		this.fabricanteDAO = CDIServiceLocator.getBean(FabricanteDAO.class);
-	}
-	
+
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		Fabricante retorno = null;
 
-		if (value != null) {
+		if (StringUtils.isNotBlank(value)) {
 			retorno = this.fabricanteDAO.buscarPeloCodigo(new Long(value));
 		}
 
@@ -34,10 +33,10 @@ public class FabricanteConverter implements Converter {
 		if (value != null) {
 			Long codigo = ((Fabricante) value).getCodigo();
 			String retorno = (codigo == null ? null : codigo.toString());
-			
+
 			return retorno;
 		}
-		
+
 		return "";
 	}
 

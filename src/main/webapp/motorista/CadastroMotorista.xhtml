@@ -1,19 +1,20 @@
 <ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
     xmlns:o="http://omnifaces.org/ui">
 
-    <ui:define name="titulo">Novo motorista</ui:define>
+    <ui:define name="titulo">#{cadastroMotoristaBean.editando ? 'Edição motorista' : 'Novo motorista'}</ui:define>
     
     <ui:define name="corpo">
     	<f:metadata>
 			<o:viewParam name="motorista" value="#{cadastroMotoristaBean.motorista}" />
+			<f:viewAction action="#{cadastroMotoristaBean.inicializar}"/>
 		</f:metadata>
     
-    	<h1>Novo motorista</h1>
+    	<h1>#{cadastroMotoristaBean.editando ? 'Edição motorista' : 'Novo motorista'}</h1>
     	
     	<h:form id="frmCadastro">
     		<p:messages id="messages" autoUpdate="true" closable="true" />

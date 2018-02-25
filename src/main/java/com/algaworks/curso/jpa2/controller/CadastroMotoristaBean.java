@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -13,7 +12,7 @@ import com.algaworks.curso.jpa2.modelo.Motorista;
 import com.algaworks.curso.jpa2.modelo.Sexo;
 import com.algaworks.curso.jpa2.service.CadastroMotoristaService;
 import com.algaworks.curso.jpa2.service.NegocioException;
-import com.algaworks.curso.jpa2.util.jsf.FacesUtil;
+import com.algaworks.curso.jpa2.util.jsf.FacesMessages;
 
 @Named
 @ViewScoped
@@ -23,26 +22,31 @@ public class CadastroMotoristaBean implements Serializable {
 
 	private Motorista motorista;
 
-	private List<Sexo> sexos;
-
 	@Inject
 	private CadastroMotoristaService cadastroMotoristaService;
 
-	@PostConstruct
+	private List<Sexo> sexos;
+
+	@Inject
+	private FacesMessages facesMessages;
+
 	public void inicializar() {
-		this.limpar();
+		if (this.motorista == null) {
+			this.limpar();
+		}
+
 		this.sexos = Arrays.asList(Sexo.values());
 	}
 
 	public void salvar() {
 		try {
 			this.cadastroMotoristaService.salvar(motorista);
-			FacesUtil.addSuccessMessage("Motorista salvo om sucesso!");
-		} catch (NegocioException e) {
-			FacesUtil.addErrorMessage(e.getMessage());
-		}
+			facesMessages.info("Motorista salvo com sucesso!");
 
-		this.limpar();
+			this.limpar();
+		} catch (NegocioException e) {
+			facesMessages.error(e.getMessage());
+		}
 	}
 
 	private void limpar() {
@@ -61,4 +65,7 @@ public class CadastroMotoristaBean implements Serializable {
 		return sexos;
 	}
 
+	public boolean isEditando() {
+		return this.motorista.getCodigo() != null;
+	}
 }

@@ -27,14 +27,14 @@ public class AcessorioDAO implements Serializable {
 	}
 
 	public List<Acessorio> buscarTodos() {
-		return manager.createQuery("from Acessorio").getResultList();
+		return manager.createQuery("from Acessorio", Acessorio.class).getResultList();
 	}
 	
 	@Transactional
-	public void excluir(Acessorio fabricante) throws NegocioException {
-		fabricante = buscarPeloCodigo(fabricante.getCodigo());
+	public void excluir(Acessorio acessorio) throws NegocioException {
+		acessorio = buscarPeloCodigo(acessorio.getCodigo());
 		try {
-			manager.remove(fabricante);
+			manager.remove(acessorio);
 			manager.flush();
 		} catch (PersistenceException e) {
 			throw new NegocioException("Acessorio não pode ser excluído.");

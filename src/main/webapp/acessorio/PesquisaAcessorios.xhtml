@@ -1,13 +1,17 @@
 <ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="titulo">Pesquisa de Acessório</ui:define>
     
     <ui:define name="corpo">
+    	<f:metadata>
+    		<f:viewAction action="#{pesquisaAcessorioBean.inicializar}" />
+    	</f:metadata>
+    	
     	<h1>Pesquisa de acessórios</h1>
     	
     	<h:form id="frmPesquisa">
@@ -15,7 +19,7 @@
     		
     		<p:toolbar style="margin-top: 20px">
     			<p:toolbarGroup>
-    				<p:commandButton value="Novo" id="botaoNovo" action="/acessorio/CadastroAcessorio.xhtml"/>
+    				<p:button value="Novo" outcome="/acessorio/CadastroAcessorio"/>
     			</p:toolbarGroup>
     		</p:toolbar>
     	
@@ -33,7 +37,7 @@
 		    			<p:button outcome="CadastroAcessorio" icon="ui-icon-pencil" title="Editar">
 		    				<f:param name="acessorio" value="#{acessorio.codigo}"/>
 		    			</p:button>
-		    			<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show()"
+		    			<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="PF('confirmacaoExclusao').show()"
 								process="@this" update=":frmPesquisa:confirmacaoExclusaoDialog">
 							<f:setPropertyActionListener target="#{pesquisaAcessorioBean.acessorioSelecionado}" value="#{acessorio}" />
 						</p:commandButton>
@@ -43,9 +47,9 @@
 		    <p:confirmDialog id="confirmacaoExclusaoDialog" widgetVar="confirmacaoExclusao"
 	        		message="Tem certeza que deseja excluir o acessorio #{pesquisaAcessorioBean.acessorioSelecionado.descricao}?"  
 	                header="Exclusão de acessorio" severity="alert">
-	        	<p:button value="Não" onclick="confirmacaoExclusao.hide(); return false;" />
+	        	<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
 	        	<p:commandButton value="Sim" update=":frmPesquisa:acessoriosTable"
-	        			onclick="confirmacaoExclusao.hide()" action="#{pesquisaAcessorioBean.excluir}" />
+	        			onclick="PF('confirmacaoExclusao').hide()" action="#{pesquisaAcessorioBean.excluir}" />
 	    	</p:confirmDialog>
 	    </h:form>
     </ui:define>

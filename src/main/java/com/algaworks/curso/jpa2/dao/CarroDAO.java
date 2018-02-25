@@ -27,9 +27,8 @@ public class CarroDAO implements Serializable {
 		manager.merge(carro);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Carro> buscarTodos() {
-		return manager.createNamedQuery("Carro.buscarTodos").getResultList();
+		return manager.createNamedQuery("Carro.buscarTodos", Carro.class).getResultList();
 	}
 
 	@Transactional
@@ -44,17 +43,19 @@ public class CarroDAO implements Serializable {
 	}
 
 	public Carro buscarCarroComAcessorios(Long codigo) {
-		try {
-			return manager.createNamedQuery("Carro.buscarCarroComAcessorios", Carro.class)
-					.setParameter("codigo", codigo).getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
+		return manager.createNamedQuery("Carro.buscarCarroComAcessorios", Carro.class)
+				.setParameter("codigo", codigo)
+				.getSingleResult();
 	}
 
-	@SuppressWarnings("unchecked")
+	public Carro buscarAcessorios(Long codigo) {
+		return manager.createNamedQuery("Carro.buscarCarroComAcessorios", Carro.class)
+				.setParameter("codigo", codigo)
+				.getSingleResult();
+	}
+
 	public List<Carro> buscaComPaginacao(int first, int pageSize) {
-		return manager.createNamedQuery("Carro.buscarTodos")
+		return manager.createNamedQuery("Carro.buscarTodos", Carro.class)
 				.setFirstResult(first)
 				.setMaxResults(pageSize)
 				.getResultList();
@@ -63,5 +64,6 @@ public class CarroDAO implements Serializable {
 	public Long encontrarQuantidadeDeCarros() {	
 		return manager.createQuery("select count(c) from Carro c", Long.class).getSingleResult();
 	}
+
 
 }

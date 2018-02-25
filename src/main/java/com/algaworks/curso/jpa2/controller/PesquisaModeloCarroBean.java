@@ -3,15 +3,14 @@ package com.algaworks.curso.jpa2.controller;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.algaworks.curso.jpa2.dao.ModeloCarroDAO;
 import com.algaworks.curso.jpa2.modelo.ModeloCarro;
 import com.algaworks.curso.jpa2.service.NegocioException;
-import com.algaworks.curso.jpa2.util.jsf.FacesUtil;
+import com.algaworks.curso.jpa2.util.jsf.FacesMessages;
 import com.algaworks.curso.modelolazy.LazyModeloCarroDataModel;
 
 @Named
@@ -20,32 +19,30 @@ public class PesquisaModeloCarroBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private List<ModeloCarro> modelosCarro;
-	
 	private LazyModeloCarroDataModel lazyModeloCarro;
 	
 	private ModeloCarro modeloCarroSelecionado;
 	
 	@Inject
 	ModeloCarroDAO modeloCarroDAO;
-
-	public List<ModeloCarro> getModelosCarro() {
-		return modelosCarro;
-	}
 	
-	@PostConstruct
+	@Inject
+	private FacesMessages facesMessages;
+		
 	public void inicializar() {
 		//this.modelosCarro = this.modeloCarroDAO.buscarTodos();
 		lazyModeloCarro = new LazyModeloCarroDataModel(modeloCarroDAO);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void excluir() {
 		try {
 			modeloCarroDAO.excluir(modeloCarroSelecionado);
-			this.modelosCarro.remove(modeloCarroSelecionado);
-			FacesUtil.addSuccessMessage("Modelo " + modeloCarroSelecionado.getDescricao() + " excluído com sucesso.");
+			List<ModeloCarro> modelosCarro = (List<ModeloCarro>) this.getLazyModeloCarro().getWrappedData();
+			modelosCarro.remove(modeloCarroSelecionado);
+			facesMessages.info("Modelo " + modeloCarroSelecionado.getDescricao() + " excluído com sucesso.");
 		} catch (NegocioException e) {
-			FacesUtil.addErrorMessage(e.getMessage());
+			facesMessages.error(e.getMessage());			
 		}
 	}
 	
